@@ -1,0 +1,135 @@
+{include file='public/header'}
+{include file='public/list'}
+<!--state overview end-->           
+ <div class="row">
+                <div class="col-lg-12">
+                    <!--work progress start-->
+                    <section class="panel panel-success">
+                        <div class="panel-body progress-panel">
+                            <div class="task-progress">
+                                <h1>卡密生成</h1>
+                                <p>所有卡密一览.</p>
+					 <div class="panel-body">
+          <form action="" method="post" class="form-inline" id="ckami">
+            <div class="form-group">
+              <label>生成卡密数量</label>
+              <input type="text" name="kmsl" value="" class="form-control" placeholder="请输入生成卡密数量">
+            </div>
+            <div class="form-group">
+              <label>授权时间</label>
+              <select name="ytime" class="form-control">
+                <option value="1">1年</option>
+                <option value="2">2年</option>
+				<option value="3">3年</option>
+				<option value="4">4年</option>
+				<option value="5">5年</option>
+				<option value="99">永久</option>
+              </select>
+            </div>
+            <a name="submit" class="btn btn-info" onclick='creatkami()'/>生成</a> <a href="{:url('admin/kami/kamiout',['execl'=>'yes'])}" class="btn btn-primary"/>导出卡密</a>
+          </form>
+        </div>
+                            </div>
+                        </div>						
+
+						<div class="table-responsive">
+                        <table  class="display table table-bordered table-striped" id="dynamic-table">
+                            <thead>
+                            <tr>
+                                <th style='text-align:center'>ID</th>
+								<th style='text-align:center'>卡密</th>
+								<th style='text-align:center'>卡密期限</th>
+                                <th style='text-align:center'>生成时间</th>
+                                <th style='text-align:center'>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                {notempty name="kami"}
+                                {foreach name='kami' item='v'}
+								<tr class='gradeX'>
+                                    <td style='text-align:center'>{$v.id}</td>
+                                    <td style='text-align:center'>{$v.km}</td>
+                                    <td style='text-align:center'>{$v.time}年</td>
+                                    <td style='text-align:center'>
+                                        <span class='label label-success'>{$v.ctime|date="Y-m-d H:i:s",###}</span></td>
+                                    <td style='text-align:center'>
+                                        <a class='btn btn-primary btn-xs' onclick="kami_del(this,{$v.id})">
+                                                <i class='fa fa-ban'></i></a>
+                                    </td>
+                                </tr> 
+                                {/foreach} 
+                                {else/}  
+                                    <tr class='gradeX'>
+                                        <td colspan="5" style='text-align:center'>暂无信息</td>
+                                    </tr>
+                                {/notempty}                         
+                            </tbody>
+                        </table>
+						</div>
+						<table  class="display table table-bordered table-striped" id="dynamic-table">
+						<tfoot>
+							<tr>
+    							<td >
+                                     {$kami->render()}
+                                </td>							
+                            </tr>
+							</tfoot>
+							</table>
+                    </section>
+                    <!--work progress end-->
+                </div></div>
+
+        </section>
+    </section>
+    <!--main content end-->
+{include file='public/footer'}
+<script type="text/javascript">
+function creatkami(){
+    var kmsl = $("input[name='kmsl']").val();
+    if(kmsl==''){
+        layer.msg('卡密数量不能为空!',{icon: 2,time:1000});
+        return false;
+    }
+    $.ajax({
+        type: 'post',
+        url: '{:url("admin/kami/creatkami")}',
+        data: $('#ckami').serialize(),
+        success: function(data){
+            if(data.code==1){
+                layer.msg(data.msg, 
+                {icon:1,time:1000},function(){
+                     window.location.href = data.url;});
+            }else{
+                layer.msg(data.msg, 
+                {icon:2,time:1000});   
+            }
+        }
+    });
+}
+
+   function kami_del(obj,id){
+    layer.confirm('确认要删除该卡密吗？',function(index){
+        var km_id = {
+            km_id:id,
+        };       
+        $.ajax({
+            type: 'POST',
+            url: '{:url("admin/kami/delkami")}',
+            dataType: 'json',
+            data:km_id,
+            success: function(data){
+                if(data.code==1)
+                {
+                 layer.msg(data.msg,{icon:1,time:1000},function(){
+                 $(obj).parents("tr").remove();
+                 });
+                }else{
+                 layer.msg(data.msg,{icon:2,time:1000});
+                }
+    
+            }
+        });     
+
+    });
+}     
+</script>

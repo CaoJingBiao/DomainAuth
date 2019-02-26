@@ -1,0 +1,96 @@
+{include file='public/header'}
+<body >
+
+<section id="container" >
+
+    <section id="main-content">
+        <section class="wrapper">
+           <div class="row">
+<div class="col-md-6 col-md-offset-2">
+                    <!--work progress start-->
+                    <section class="panel">
+                        <div class="panel-body progress-panel">
+                            <div class="task-progress">
+                                <h1>自动授权</h1>
+                                
+                            </div>
+                        </div>
+						<div class="table  table-hover personal-task">
+							<ul class="pagination"><a class="btn btn-info" href='{:url("index/index/index")}'>正版查询</a>
+							&nbsp;<a class="btn btn-warning" href="{$selfhelp.website}" target="_blank">购买卡密</a></ul></div>
+                        	<div class="alert-dangergg">
+                        			{$selfhelp.prompt}</div>
+                        		 <br>
+							
+	 <h3 class="form-signin-heading">输入授权信息</h3>
+	 <form action="" class="form-sign" method="post" id='form'>
+	 (不要带http://，提交前请检查，提交后无法修改！)<br><br>
+		 <input type="text" class="form-controltm" name="domain" placeholder="请输入授权域名" value=""><br>
+		 <input type="text" class="form-controltm" name="ip" placeholder="请输入授权ip" value=""><br>
+		 <input type="text" class="form-controltm" name="qq" placeholder="请输入QQ账号" value=""><br>
+		 <input type="text" class="form-controltm" name="km" placeholder="请输入授权卡密" value=""><br>
+		 <a name="submit" class="btn btn-danger btn-block" onclick='getstatus()'>确定授权</a>
+	 </form>
+<br/>
+<br/>
+<br/>
+{include file='public/footer'}
+<script type="text/javascript">
+function getstatus(){
+    var domain = $("input[name='domain']").val();
+    var ip = $("input[name='ip']").val();
+    var qq = $("input[name='qq']").val();
+    var km = $("input[name='km']").val();
+    var domainreg = /^(?=^.{3,255}$)[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+$/;
+    var ipreg = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])(\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])){3}$/;
+    var qqreg = /^[1-9][0-9]{4,10}$/;
+    var kmreg = /^[a-zA-Z0-9]{20}$/;
+    if(domain == ''){
+           layer.msg('域名不能为空!',{icon: 2,time:1000});
+            return false;
+        }
+    if(!domainreg.test(domain)){
+        layer.msg('域名格式不正确!',{icon: 2,time:1000});
+            return false;
+    }
+    if(ip == ''){
+           layer.msg('IP不能为空!',{icon: 2,time:1000});
+            return false;
+        }
+    if(!ipreg.test(ip)){
+        layer.msg('IP格式不正确!',{icon: 2,time:1000});
+            return false;
+    }
+    if(qq == ''){
+           layer.msg('QQ不能为空!',{icon: 2,time:1000});
+            return false;
+        }
+    if(!qqreg.test(qq)){
+        layer.msg('QQ号码格式不正确!',{icon: 2,time:1000});
+            return false;
+    }
+    if(km == ''){
+           layer.msg('卡密不能为空!',{icon: 2,time:1000});
+            return false;
+        }
+    if(!kmreg.test(km)){
+        layer.msg('卡密格式不正确!',{icon: 2,time:1000});
+            return false;
+    }
+    $.ajax({
+        type: 'post',
+        url: '{:url("index/index/selfhelp")}',
+        data: $('#form').serialize(),
+        success: function(data){
+            if(data.code==1){
+                layer.msg(data.msg, 
+                {icon:1,time:1000},function(){
+                     window.location.href = data.url;});
+            }else{
+                layer.msg(data.msg, 
+                {icon:2,time:1000});   
+            }
+        }
+    });
+}     
+</script>

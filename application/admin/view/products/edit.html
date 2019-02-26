@@ -1,0 +1,60 @@
+{include file='public/header'}
+{include file='public/list'}
+ <!--state overview end-->            <div class="row">
+                <div class="col-lg-12">
+                    <!--work progress start-->
+                    <section class="panel">
+                        <div class="panel-body progress-panel">
+                            <div class="task-progress">
+                                <h1>修改产品信息</h1>
+                                <p>填写产品信息并保存.</p>
+                            </div>
+                        </div>
+						<form action="" method="post"  id="form">
+                            <div class="form-group">
+                                <label for="txtDomain">产品</label>
+                                <input type="text" name="cp" class="form-control" value='{$pmsg.cp}'>
+                                <input type="hidden" name='p_id' value='{$pmsg.id}'>
+                            </div>
+                            <div class="form-group">
+                                <label for="txtDomain">描述</label>
+                                <input type="text" name="ms" class="form-control" value='{$pmsg.ms}'>
+                            </div>
+
+			<div id="bottom" >
+			  <a class="btn btn-info" value="true" id="submit" onclick='prod_edit()'/><strong>修改产品</strong></a>
+            </div>
+                        </form>
+                    </section>
+                    <!--work progress end-->
+                </div>
+
+        </section>
+    </section>
+    <!--main content end-->
+{include file='public/footer'}
+<script type="text/javascript">
+function prod_edit(){
+    var cp = $("input[name='cp']").val();
+    var ms = $("input[name='ms']").val();
+    if(cp==''){
+        layer.msg('产品名称不能为空!',{icon: 2,time:1000});
+        return false;
+    }
+    $.ajax({
+        type: 'post',
+        url: '{:url("admin/products/edit")}',
+        data: $('#form').serialize(),
+        success: function(data){
+            if(data.code==1){
+                layer.msg(data.msg, 
+                {icon:1,time:1000},function(){
+                     window.location.href = data.url;});
+            }else{
+                layer.msg(data.msg, 
+                {icon:2,time:1000});   
+            }
+        }
+    });
+}     
+</script>

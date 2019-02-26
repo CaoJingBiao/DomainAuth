@@ -1,0 +1,91 @@
+ {include file='public/header'}
+{include file='public/list'} 
+ <!--state overview end-->           
+  <div class="row">
+                <div class="col-lg-12">
+                    <!--work progress start-->
+                    <section class="panel">
+                        <div class="panel-body progress-panel">
+                            <div class="task-progress">
+                                <h1>盗版使用者域名</h1>
+                                <p>盗版域名列表一览.</p>
+                            </div>
+                        </div>
+						<div class="table-responsive">
+                        <table  class="display table table-bordered table-striped" id="dynamic-table">
+                            <thead>
+                            <tr>
+                                <th style='text-align:center'>ID</th>
+                                <th style='text-align:center'>域名</th>
+                                <th style='text-align:center'>IP</th>
+                                <th style='text-align:center'>录入时间</th>
+                                <th style='text-align:center'>删除站点</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                {notempty name="daoban"}
+                                {foreach name='daoban' item='v'}
+								<tr class='gradeX'>
+                                    <td style='text-align:center'>{$v.id}</td>
+                                    <td style='text-align:center'>
+                                        <a href='http://{$v.domain}' target='_blank'>{$v.domain}</a></td>
+                                    <td style='text-align:center'>{$v.ip}</td>
+                                    <td style='text-align:center'>{$v.time|date="Y-m-d H:i:s",###}</td>
+                                    <td style='text-align:center'>
+                                        <a class='btn btn-primary btn-xs' onclick='daoban_del(this,{$v.id})'>
+                                            <i class='fa fa-ban'></i></a>
+                                    </td>
+                                </tr>   
+                                {/foreach}   
+                                {else/}  
+                                    <tr class='gradeX'>
+                                        <td colspan="5" style='text-align:center'>暂无信息</td>
+                                    </tr>
+                                {/notempty}                      
+                            </tbody>
+                        </table>
+						</div>
+						<table  class="display table table-bordered table-striped" id="dynamic-table">
+						<tfoot>
+							<tr>
+    							<td >
+                                    {$daoban->render()}
+                                </td>							
+                            </tr>
+							</tfoot>
+							</table>
+                    </section>
+                    <!--work progress end-->
+                </div>
+
+        </section>
+    </section>
+    <!--main content end-->
+    {include file='public/footer'}
+<script type="text/javascript">
+function daoban_del(obj,id){
+    layer.confirm('确认要删除该站点吗？',function(index){
+        var daoban_id = {
+            daoban_id:id,
+        };       
+        $.ajax({
+            type: 'POST',
+            url: '{:url("admin/daoban/daobandel")}',
+            dataType: 'json',
+            data: daoban_id,
+            success: function(data){
+                if(data.code==1)
+                {
+                 layer.msg(data.msg,{icon:1,time:1000},function(){
+                 $(obj).parents("tr").remove();
+                 });
+                }else{
+                 layer.msg(data.msg,{icon:2,time:1000});
+                }
+    
+            }
+        });     
+
+    });
+}
+ </script>

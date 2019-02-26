@@ -1,0 +1,145 @@
+{include file='public/header'}
+{include file='public/list'}           
+<!--state overview end-->            
+            <div class="row">				
+                <div class="col-lg-12">
+                    <!--work progress start-->
+                    <section class="panel">
+                        <div class="panel-body progress-panel">
+                            <div class="task-progress">
+                                <h1>授权一览</h1>
+                                <p>最近添加的授权</p>
+                            </div>
+                        </div>
+						<div class="table-responsive">
+                        <table class="table table-hover personal-task">
+                        <thead>
+							<tr>
+							<th style='text-align:center'>ID</th>
+							<th style='text-align:center'>用户名/注册IP</th>
+							<th style='text-align:center'>产品</th>
+							<th style='text-align:center'>版本号</th>
+							<th style='text-align:center'>域名</th>
+							<th style='text-align:center'>ip</th>
+							<th style='text-align:center'>QQ</th>
+							<th style='text-align:center'>电话</th>
+							<th style='text-align:center'>验证方式</th>
+							<th style='text-align:center'>授权方式</th>
+							<th style='text-align:center'>到期时间</th>
+							</tr>
+						</thead>
+						<tbody>
+							{notempty name="authmsg"}
+							{foreach name='authmsg' item='v'}
+							<tr>
+								<td align='center'>{$v.id}</td>
+								<td align='center'>{$v.username}</td>
+								<td align='center'>
+								 {foreach name='products' item='vo'}
+                                    {if condition="$vo.id eq $v.p_id"}
+                                    {$vo.cp}
+                                    {/if}
+                                 {/foreach}
+								</td>
+								<td align='center'>{$v.version}</td>
+								<td align='center'>{$v.domain}</td>
+								<td align='center'>{$v.ip}</td>
+								<td align='center'>{$v.qq}</td>
+								<td align='center'>{$v.tel}</td>
+								<td align='center'>
+								{switch name="v.ip_qh"}
+                                        {case value="0"}域名{/case}
+                                        {case value="1"}IP双重{/case}
+                                {/switch}
+								</td>
+								<td align='center'>
+								{switch name="v.yumi"}
+                                        {case value="0"}单域名{/case}
+                                        {case value="1"}泛域名{/case}
+                                {/switch} 
+								</td>
+								<td style='text-align:center'>
+									<span class="label {if condition='$v.time egt time()'}label-success{else/}label-danger{/if}">{$v.time|date="Y-m-d",###}</span>
+								</td>
+							</tr>
+							{/foreach}	
+							{else/}  
+                                    <tr class='gradeX'>
+                                        <td colspan="11" style='text-align:center'>暂无信息</td>
+                                    </tr>
+                            {/notempty}		
+                            </tbody>
+                        </table>
+						<!-- <table class="table table-hover personal-task">
+						<tbody>
+							<tr>
+							<td>
+								<ul class="pagination">
+									<li class="disabled"><a>当前页码：1/0</a></li>
+									<li class="disabled"><a>记录条数：条</a></li>
+								</ul>
+							</td>							
+							</tr>
+						</tbody>
+						</table> -->
+                    </section>
+                    <!--work progress end-->
+                </div></div>
+				
+                <div class="col-lg-13">
+                    <!--work progress start-->
+                    <section class="panel">
+                        <div class="panel-body progress-panel">
+                            <div class="task-progress">
+                                <h1>盗版一览</h1>
+                                <p>最近盗用的域名</p>
+                            </div>
+                        </div>
+						<div class="table-responsive">
+                        <table class="table table-hover personal-task">
+                            <thead>
+							<tr>
+							<th style='text-align:center'>ID</th>
+							<th style='text-align:center'>域名</th>
+							<th style='text-align:center'>IP</th>
+							<th style='text-align:center'>追踪录入时间</th>
+							</tr>
+							</thead>
+							<tbody>
+							{notempty name="daobanmsg"}
+							{foreach name='daobanmsg' item='v'}
+							<tr>
+								<td style='text-align:center'>{$v.id}</td>
+								<td style='text-align:center'>
+									<a href='http://{$v.domain}' target='_blank'>{$v.domain}</a></td>
+								<td style='text-align:center'>{$v.ip}</td>
+								<td style='text-align:center'>{$v.time|date="Y-m-d H:i:s",###}</td>
+							</tr>
+							{/foreach}
+							{else/}  
+                                    <tr class='gradeX'>
+                                        <td colspan="4" style='text-align:center'>暂无信息</td>
+                                    </tr>
+                            {/notempty}	
+                            </tbody>
+                        </table>
+						<!-- <table class="table table-hover personal-task">
+						<tbody>
+							<tr>
+							<td>
+								<ul class="pagination">
+									<li class="disabled"><a>当前页码：1/1</a></li>
+									<li class="disabled"><a>记录条数：条</a></li>
+								</ul>
+							</td>
+							</tr>
+						</tbody>
+						</table> -->
+                    </section>
+                    <!--work progress end-->
+                </div></div>
+
+        </section>
+    </section>
+    <!--main content end-->
+    {include file='public/footer'}

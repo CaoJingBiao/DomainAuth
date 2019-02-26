@@ -1,0 +1,61 @@
+{include file='public/header'}
+<body >
+
+<section id="container" >
+
+    <section id="main-content">
+        <section class="wrapper">
+           <div class="row">
+<div class="col-md-6 col-md-offset-2">
+                    <!--work progress start-->
+                    <section class="panel">
+                        <div class="panel-body progress-panel">
+                            <div class="task-progress">
+                                <h1>正版查询</h1>
+                                
+                            </div>
+                        </div>
+						<div class="table  table-hover personal-task">
+							<ul class="pagination">
+                                <a class="btn btn-info" href='{:url("index/index/index")}'>正版查询</a> &nbsp;
+                                <a class="btn btn-primary" href='{:url("index/index/selfhelp")}'>自助授权</a>
+                            </ul>
+						</div>
+                        <h3 class="form-signin-heading">输入域名查询</h3>
+                        <form action="" class="form-sign" method="get">
+							(不要带http://)<br><br>
+							<input type="text" id='svalue' class="form-controltm" name="search" placeholder="请输入查询域名,不要带http://" value=""><br>
+							<a class="btn btn-danger btn-block" name="submit" onclick='getstatus()'>点击查询</a><br/><br/><br/>
+                        </form>
+							
+{include file='public/footer'}
+<script type="text/javascript">
+    function getstatus(){
+        var searchvalue = $('#svalue').val();
+        if(searchvalue==''){
+            layer.msg('查询内容不能为空!',{icon: 2,time:1000});
+            return false;
+        }
+        var domainreg = /^(?=^.{3,255}$)[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+$/;
+        if(!domainreg.test(searchvalue)){
+            layer.msg('域名格式不正确!',{icon: 2,time:1000});
+            return false;
+        }
+        var sv = {sv:searchvalue};
+        $.ajax({
+            type: 'get',
+            url: '{:url("index/index/index")}',
+            dataType: 'json',
+            data:sv,
+            success: function(data){
+                 if(data.code==1){
+                        layer.alert(data.msg, 
+                        {icon:1,skin: 'layui-layer-molv',anim: 5});
+                    }else{
+                        layer.alert(data.msg, 
+                        {icon:2,skin: 'layui-layer-molv',anim: 5});   
+                    }
+                }
+            });     
+    };
+</script>

@@ -1,0 +1,140 @@
+{include file='public/header'}
+{include file='public/list'}   
+<!--state overview end-->           
+ <div class="row">
+                <div class="col-lg-12">
+                    <!--work progress start-->
+                    <section class="panel panel-success">
+                        <div class="panel-body progress-panel">
+                            <div class="task-progress">
+                                <h1>授权管理</h1>
+                                <p>所有授权一览，点击修改授权状态.</p>
+					 <div class="panel-body">
+          <form action="" method="get" class="form-inline" role="form">
+            <div class="form-group">
+              <label>类别</label>
+              <select name="type" class="form-control" id='svalue'>
+                <option value="username">用户名</option>
+                <option value="domain">域名</option>
+				<option value="qq">QQ</option>
+				<option value="tel">电话</option>
+                <option value="ip">IP</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>内容</label>
+              <input type="text" name="kw" value="" class="form-control" autocomplete="off"/>
+            </div>
+            <input type="submit" value="查询" class="btn btn-info"/>
+          </form>
+        </div>
+                            </div>
+                        </div>						
+
+						<div class="table-responsive">
+                        <table  class="display table table-bordered table-striped" id="dynamic-table">
+                            <thead>
+                            <tr>
+                                <th style='text-align:center'>用户名/注册IP</th>
+								<th style='text-align:center'>产品</th>
+                                <th style='text-align:center'>版本号</th>
+                                <th style='text-align:center'>域名</th>
+                                <th style='text-align:center'>IP</th>
+                                <th style='text-align:center'>QQ</th>
+                                <th style='text-align:center'>电话</th>
+								<th style='text-align:center'>验证方式</th>
+								<th style='text-align:center'>授权方式</th>
+                                <th style='text-align:center'>到期时间</th>
+                                <th style='text-align:center'>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                {notempty name="auths"}
+                                {foreach name='auths' item='v'}
+								<tr class='gradeX'>
+                                    <td style='text-align:center'>{$v.username}</td>
+                                    <td style='text-align:center'>
+                                    {foreach name='products' item='vo'}
+                                    {if condition="$vo.id eq $v.p_id"}
+                                    {$vo.cp}
+                                    {/if}
+                                    {/foreach}
+                                    </td>
+                                    <td style='text-align:center'>{$v.version}</td>
+                                    <td style='text-align:center'>{$v.domain}</td>
+                                    <td style='text-align:center'>{$v.ip}</td>
+                                    <td style='text-align:center'>{$v.qq}</td>
+                                    <td style='text-align:center'>{$v.tel}</td>
+                                    <td style='text-align:center'>
+                                    {switch name="v.ip_qh"}
+                                        {case value="0"}域名{/case}
+                                        {case value="1"}IP双重{/case}
+                                    {/switch}
+                                    </td>
+                                    <td style='text-align:center'>
+                                    {switch name="v.yumi"}
+                                        {case value="0"}单域名{/case}
+                                        {case value="1"}泛域名{/case}
+                                    {/switch} 
+                                    </td>
+                                    <td style='text-align:center'><span class="label {if condition='$v.time egt time()'}label-success{else/}label-danger{/if}">{$v.time|date='Y-m-d',###}</span></td>
+                                    <td style='text-align:center'>
+                                        <a class='btn btn-primary btn-xs' href="{:url('admin/authorize/edit',['auth_id'=>$v.id])}">
+                                            <i class='fa fa-edit'></i></a>   
+                                        <a class='btn btn-primary btn-xs' onclick="auth_del(this,{$v.id})">
+                                            <i class='fa fa-ban'></i></a>
+                                    </td>
+                                </tr>    
+                                {/foreach} 
+                                {else/}  
+                                    <tr class='gradeX'>
+                                        <td colspan="11" style='text-align:center'>未查询到信息</td>
+                                    </tr>
+                                {/notempty}                     
+                            </tfoot>
+                        </table>
+						</div>
+						<table  class="display table table-bordered table-striped" id="dynamic-table">
+						<tfoot>
+							<tr>
+    							<td >
+                                    {$auths->render()}
+                                 </td>							
+                             </tr>
+							</tfoot>
+							</table>
+                    </section>
+                    <!--work progress end-->
+                </div></div>
+
+        </section>
+    </section>
+    <!--main content end-->
+  {include file='public/footer'}
+  <script type="text/javascript">
+   function auth_del(obj,id){
+    layer.confirm('确认要删除授权吗？',function(index){
+        var auth_id = {
+            auth_id:id,
+        };       
+        $.ajax({
+            type: 'POST',
+            url: '{:url("admin/authorize/del")}',
+            dataType: 'json',
+            data:auth_id,
+            success: function(data){
+                if(data.code==1)
+                {
+                 layer.msg(data.msg,{icon:1,time:1000},function(){
+                 $(obj).parents("tr").remove();
+                 });
+                }else{
+                 layer.msg(data.msg,{icon:2,time:1000});
+                }
+    
+            }
+        });     
+
+    });
+}
+</script>

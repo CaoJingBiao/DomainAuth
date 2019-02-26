@@ -1,0 +1,149 @@
+{include file='public/header'}
+{include file='public/list'}         
+ <!--state overview end-->            
+<div class="row">
+                <div class="col-lg-12">
+                    <!--work progress start-->
+                    <section class="panel">
+                        <div class="panel-body progress-panel">
+                            <div class="task-progress">
+                                <h1>添加新授权</h1>
+                                <p>填写授权信息并保存.</p>
+                            </div>
+                        </div>
+						<form action="" method="post"  id="form">
+                            <div class="form-group">
+                                <label for="txtDomain">名称</label>
+                                <input type="text" name="username" class="form-control" placeholder="名称">
+                            </div>					
+                            <div class="form-group">
+                                <label for="txtDomain">产品</label>
+                                <select name="ycp" class="form-control" >
+                                    <option>选择产品分类</option>
+                                    {foreach name='products' item='vo'}
+                                    <option value='{$vo.id}'>{$vo.cp}</option> 
+                                    {/foreach}  
+                                </select>
+                            </div>							
+                            <div class="form-group">
+                                <label for="txtDomain">授权域名</label>
+                                <input type="text" name="domain" class="form-control" placeholder="选择泛域名验证时，只需要填写baidu.com类似格式的域名" autocomplete="off" required/>
+                            </div>
+                            <div class="form-group">
+                                <label for="txtDomain">IP</label>
+                                <input type="text" name="ip" class="form-control" placeholder="授权域名对应的服务器IP，选择IP双重验证时选填">
+                            </div>
+                            <div class="form-group">
+                                <label for="txtDomain">QQ</label>
+                                <input type="text" name="qq" class="form-control" value='' placeholder="授权域名用户联系QQ，选填">
+                            </div>
+                            <div class="form-group">
+                                <label for="txtDomain">电话</label>
+                                <input type="text" name="tel" class="form-control" value='' placeholder="授权域名用户联系手机，选填">
+                            </div>
+                            <div class="form-group">
+                                <label for="txtDomain">版本号</label>
+                                <input type="text" name="version" class="form-control" value='' placeholder="授权程序版本号，选填">
+                            </div>
+                            <div class="form-group">
+                                <label for="txtDomain">验证方式</label>
+                                <select name="ip_qh" class="form-control">
+                                    <option value="0">域名</option>
+                                    <option value="1">IP双重</option>
+                                </select>
+                            </div>
+							
+                            <div class="form-group">
+                                <label for="txtDomain">域名授权方式</label>
+                                <select name="yumi" class="form-control">
+                                        <option value="0">单域名</option>
+                                         <option value="1">泛域名</option>
+                                 </select>
+					<span class="help-block">泛域名授权是指，授权后该域名所有的泛域名都可以使用</span>
+					<span class="help-block">单域名授权是指，只授权当前域名</span>
+                </div>
+							
+                            <div class="form-group">
+                                <label for="txtDomain">到期时间</label>
+                                <input type="text" name="time" class="form-control" id="time1" value="" autocomplete="off" required/>
+                            </div>
+			<div id="bottom" >
+			 <a class="btn btn-info" onclick='auth_add()'><strong>添加授权</strong></a>
+            </div>
+                        </form>
+                    </section>
+                    <!--work progress end-->
+                </div>
+
+        </section>
+    </section>
+    <!--main content end-->
+{include file='public/footer'}
+<script type="text/javascript">
+function auth_add(){
+    var username = $("input[name='username']").val();
+    var domain = $("input[name='domain']").val();
+    var ip = $("input[name='ip']").val();
+    var tel = $("input[name='tel']").val();
+    var qq = $("input[name='qq']").val();
+    var version = $("input[name='version']").val();
+    var time = $("input[name='time']").val();
+    var domainreg = /^(?=^.{3,255}$)[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+$/;
+    var ipreg = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])(\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])){3}$/;
+    var qqreg = /^[1-9][0-9]{4,10}$/;
+    var telreg = /(^1[3|4|5|7|8|9][0-9]{9}$)/;
+    if(domain==''){
+        layer.msg('域名不能为空!',{icon: 2,time:1000});
+        return false;
+    }
+    if(!domainreg.test(domain)){
+        layer.msg('域名格式不正确!',{icon: 2,time:1000});
+            return false;
+    }
+    if(ip!=''&&(!ipreg.test(ip))){      
+        layer.msg('IP格式不正确!',{icon: 2,time:1000});
+            return false;
+    }
+    if(qq!=''&&(!qqreg.test(qq))){      
+        layer.msg('QQ号码格式不正确!',{icon: 2,time:1000});
+            return false;
+    }
+    if(tel!=''&&(!telreg.test(tel))){   
+        layer.msg('手机号码格式不正确!',{icon: 2,time:1000});
+            return false;
+    }
+    $.ajax({
+        type: 'post',
+        url: '{:url("admin/authorize/add")}',
+        data: $('#form').serialize(),
+        success: function(data){
+            if(data.code==1){
+                layer.msg(data.msg, 
+                {icon:1,time:1000},function(){
+                     window.location.href = data.url;});
+            }else{
+                layer.msg(data.msg, 
+                {icon:2,time:1000});   
+            }
+        }
+    });
+}     
+
+!function(){
+    laydate.skin('molv');
+    laydate({elem: '#time1'});
+}();
+
+var start = {
+    elem: '#start',
+    format: 'YYYY-MM-DD',
+    min: laydate.now(), 
+    max: '2099-06-16', 
+    istime: true,
+    istoday: false,
+    choose: function(datas){
+         end.min = datas; 
+         end.start = datas 
+    }
+};
+</script>

@@ -1,0 +1,60 @@
+{include file='public/header'}
+{include file='public/list'}
+ <!--state overview end-->           
+  <div class="row">
+                <div class="col-lg-12">
+                    <!--work progress start-->
+                    <section class="panel">
+                        <div class="panel-body progress-panel">
+                            <div class="task-progress">
+                                <h1>卡密授权日记</h1>
+                                <p>所有卡密授权日记列表一览.</p>
+                            </div>
+                        </div>
+						<div class="table-responsive">
+                        <table  class="display table table-bordered table-striped" id="dynamic-table">
+                            <thead>
+                            <tr>
+                                <th style='text-align:center'>ID</th>
+                                <th style='text-align:center'>授权域名</th>
+                                <th style='text-align:center'>卡密</th>
+                                <th style='text-align:center'>卡密期限</th>
+                                <th style='text-align:center'>激活时间</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                {notempty name="log"}
+                                {foreach name='log' item='v'}
+								<tr class='gradeX'>
+                                    <td style='text-align:center'>{$v.id}</td>
+                                    <td style='text-align:center'>{$v.domain}</td>
+                                    <td style='text-align:center'>{$v.km}</td>
+                                    <td style='text-align:center'>{$v.time}年</td>
+                                    <td style='text-align:center'><span class='label label-success'>{$v.usetime|date='Y-m-d H:i:s',###}</span></td>
+                                </tr>   
+                                {/foreach}
+                                {else/}  
+                                    <tr class='gradeX'>
+                                        <td colspan="5" style='text-align:center'>暂无信息</td>
+                                    </tr>
+                                {/notempty}                        
+                            </tbody>
+                        </table>
+						</div>
+						<table  class="display table table-bordered table-striped" id="dynamic-table">
+						<tfoot>
+							<tr>
+    							<td >
+                                    {$log->render()}
+                                </td>							
+                            </tr>
+							</tfoot>
+							</table>
+                    </section>
+                    <!--work progress end-->
+                </div>
+
+        </section>
+    </section>
+    <!--main content end-->
+     {include file='public/footer'}

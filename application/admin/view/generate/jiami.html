@@ -1,0 +1,43 @@
+{include file='public/header'}
+{include file='public/list'}
+ <!--state overview end-->            <div class="row">
+                <div class="col-lg-12">
+                    <!--work progress start-->
+                    <section class="panel">
+                        <div class="panel-body">
+                                    <div class="alert alert-block alert-success fade in" id="msgSuccess">
+                                        <button data-dismiss="alert" class="close close-sm" type="button">
+                                            <i class="fa fa-times"></i>
+                                        </button>
+                                        <strong>将需要加密的代码，复制到encoded目录中，然后点击马上加密按钮.</strong>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="txtClass">加密说明</label>
+
+                                      <textarea class="form-control" id="txtScript" cols="60" rows="13" readonly>
+1.使用FTP工具，把需要加密的php文件上传到根目录下的encoded目录中，然后点击加密按钮等待加密完成。
+注：本工具支持PHP格式代码加密
+</textarea>
+
+
+      </div>
+      请您确定下是否已经复制或者上传好php文件到encoded目录中
+       <button class="btn btn-info" id="test2"/><strong>马上加密</strong></button>
+    </div>  </section>
+                    <!--work progress end-->
+                </div>
+
+        </section>
+    </section>
+    <!--main content end-->
+<script>
+$('#test2').on('click', function(){
+layer.open({
+  type: 2,
+  style: 'position:fixed; bottom:0; left:0; width: 100%; height: 200px; padding:10px 0; border:none;', 
+  skin: 'layui-layer-rim', 
+  content: ['generateclass-encoded-jiami.php', 'no']
+});
+});
+</script>
+{include file='public/footer'}

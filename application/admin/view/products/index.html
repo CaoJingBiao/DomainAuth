@@ -1,0 +1,94 @@
+{include file='public/header'}
+{include file='public/list'}
+<!--state overview end-->            <div class="row">
+                <div class="col-lg-12">
+                    <!--work progress start-->
+                    <section class="panel panel-success">
+                        <div class="panel-body progress-panel">
+                            <div class="task-progress">
+                                <h1>产品管理</h1>
+                                <p>所有产品一览，点击修改产品状态.</p>
+                            </div>
+                        </div>						
+
+						<div class="table-responsive">
+                        <table  class="display table table-bordered table-striped" id="dynamic-table">
+                            <thead>
+                            <tr>
+                                <th style='text-align:center'>ID</th>
+                                <th style='text-align:center'>产品</th>
+                                <th style='text-align:center'>描述</th>
+                                <th style='text-align:center'>加入时间</th>
+                                <th style='text-align:center'>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {notempty name="products"}
+                            {foreach name='products' item='v'}
+							<tr class='gradeX'>
+                                <td style='text-align:center'>{$v.id}</td>
+                                <td style='text-align:center'>{$v.cp}</td>
+                                <td style='text-align:center'>{$v.ms}</td>
+                                <td style='text-align:center'><span class='label label-success'>{$v.time|date="Y-m-d H:i:s",###}</span></td>
+                                <td style='text-align:center'>
+									<a class='btn btn-primary btn-xs' href="{:url('admin/products/edit',['p_id'=>$v.id])}">
+                                        <i class='fa fa-edit'></i></a> 
+                                    {if condition='$v.id neq 1'}  
+                                    <a class='btn btn-primary btn-xs' onclick="product_del(this,{$v.id})">
+								        <i class='fa fa-ban'></i></a>
+                                    {/if}
+								</td>
+                            </tr>   
+                            {/foreach}  
+                            {else/}  
+                                    <tr class='gradeX'>
+                                        <td colspan="4" style='text-align:center'>暂无信息</td>
+                                    </tr>
+                            {/notempty}                      
+                            </tbody>
+                        </table>
+						</div>
+						<table  class="display table table-bordered table-striped" id="dynamic-table">
+						<tfoot>
+							<tr>
+    							<td >
+                                    {$products->render()}
+                                </td>							
+                            </tr>
+							</tfoot>
+							</table>
+                    </section>
+                    <!--work progress end-->
+                </div></div>
+
+        </section>
+    </section>
+    <!--main content end-->
+{include file='public/footer'}
+  <script type="text/javascript">
+   function product_del(obj,id){
+    layer.confirm('确认要删除该产品吗？',function(index){
+        var product_id = {
+            product_id:id,
+        };       
+        $.ajax({
+            type: 'POST',
+            url: '{:url("admin/products/del")}',
+            dataType: 'json',
+            data:product_id,
+            success: function(data){
+                if(data.code==1)
+                {
+                 layer.msg(data.msg,{icon:1,time:1000},function(){
+                 $(obj).parents("tr").remove();
+                 });
+                }else{
+                 layer.msg(data.msg,{icon:2,time:1000});
+                }
+    
+            }
+        });     
+
+    });
+}
+</script>

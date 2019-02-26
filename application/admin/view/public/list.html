@@ -1,0 +1,139 @@
+    <!--sidebar start-->
+    <aside>
+    <div id="sidebar"  class="nav-collapse ">
+        <!-- sidebar menu start-->
+        <ul class="sidebar-menu" id="nav-accordion">
+            <li>
+                <a class="active" href="{:url('admin/index/index')}">
+                    <i class="fa fa-dashboard"></i>
+                    <span>控制面板</span>
+                </a>
+            </li>
+
+            <li class="sub-menu">
+                <a   href="javascript:;" >
+                    <i class="fa fa-key"></i>
+                    <span>授权信息</span>
+                </a>
+                <ul class="sub">
+                    <li  ><a  href="{:url('admin/authorize/index')}">管理授权</a></li>
+                    <li  ><a  href="{:url('admin/authorize/add')}"">添加授权</a></li>
+                </ul>
+            </li>
+            
+            <li class="sub-menu">
+                <a   href="javascript:;" >
+                    <i class="fa fa-qrcode"></i>
+                    <span>卡密管理</span>
+                </a>
+                <ul class="sub">
+                    <li  ><a  href="{:url('admin/kami/index')}">生成卡密</a></li>
+                    <li  ><a  href="{:url('admin/kami/log')}">卡密日志</a></li>
+                </ul>
+            </li>           
+            
+            <li class="sub-menu">
+                <a  href="javascript:;" >
+                    <i class="fa fa-shield"></i>
+                    <span>授权工具</span>
+                </a>
+                <ul class="sub">
+                    <li  ><a  href="{:url('admin/generate/index')}">授权代码</a></li>
+                    <!-- <li  ><a  href="{:url('generate/timeout')}">到期时间代码</a></li> -->
+					<!-- <li  ><a  href="{:url('generate/update')}">在线更新代码</a></li> -->
+					<li  ><a  href="{:url('admin/generate/jiami')}">加密工具</a></li>
+                </ul>
+            </li>
+			
+            <li class="sub-menu">
+                <a  href="javascript:;" >
+                    <i class="fa fa-list-ul"></i>
+                    <span>产品分类</span>
+                </a>
+                <ul class="sub">
+                    <li  ><a  href="{:url('admin/products/index')}">管理产品</a></li>
+                    <li  ><a  href="{:url('admin/products/add')}">添加产品</a></li>
+                </ul>
+            </li>
+			
+			<li class="sub-menu">
+                <a  href="javascript:;" >
+                    <i class="fa fa-bullseye"></i>
+                    <span>盗版追踪</span>
+                </a>
+                <ul class="sub">
+                    <li  ><a  href="{:url('admin/daoban/index')}">盗版列表</a></li>
+                </ul>
+            </li>
+
+            <li class="sub-menu">
+                <a  href="javascript:;" >
+                    <i class="fa fa-cogs"></i>
+                    <span>系统设置</span>
+					
+                </a>
+                <ul class="sub">
+				    <li  ><a  href="{:url('admin/config/setup')}">常规设置</a></li>
+					<li  ><a  href="{:url('admin/config/message')}">提示设置</a></li>
+					<li  ><a  href="{:url('admin/config/selfhelp')}">售卡设置</a></li>
+                    <li  ><a  href="{:url('admin/config/profile')}">修改密码</a></li>
+                </ul>
+            </li>
+			
+			<li class="sub-menu">
+                <a  href="javascript:;" >
+                    <i class="fa fa-question-circle"></i>
+                    <span>系统信息</a>
+					
+                </a>
+                <ul class="sub">
+				<li  ><a  href="{:url('admin/verinfo/index')}">版本信息</a></li>
+                </ul>
+            </li>
+
+
+        </ul>
+        <!-- sidebar menu end-->
+    </div>
+</aside>    <!--sidebar end-->
+<!--main content start-->
+    <section id="main-content">
+        <section class="wrapper">
+            <!--state overview start-->             
+            <div class="row state-overview">
+
+   
+        <div class="col-lg-4 col-sm-6">
+        <section class="panel">
+            <div class="symbol terques">
+                <i class="fa fa-key"></i>
+            </div>
+            <div class="value">
+                <h1>{$zbcounts}</h1>
+                <p>正版授权</p>
+            </div>
+        </section>
+    </div>
+    <div class="col-lg-4 col-sm-6">
+        <section class="panel">
+            <div class="symbol red">
+                <i class="fa fa-tags"></i>
+            </div>
+            <div class="value">
+                <h1>{$dbcounts}</h1>
+                <p>发现盗版</p>
+            </div>
+        </section>
+    </div>
+    <div class="col-lg-4 col-sm-6">
+        <section class="panel">
+            <div class="symbol blue">
+                <i class="fa fa-cogs"></i>
+            </div>
+            <div class="value">
+                <h1>{$yxts}天</h1>
+                <p>运行时长</p>
+            </div>
+        </section>
+    </div>
+</div> 

@@ -1,0 +1,52 @@
+{include file='public/header'}
+{include file='public/list'}
+ <!--state overview end-->            
+ <div class="row">
+                <div class="col-lg-12">
+                    <!--work progress start-->
+                    <section class="panel">
+                        <div class="panel-body">
+                    <div class="alert alert-block alert-success fade in" id="msgSuccess">
+                 <button data-dismiss="alert" class="close close-sm" type="button">
+                                     <i class="fa fa-times"></i>
+                                        </button>
+                                        <strong>将下面授权代码.添加到项目代码里后再对php文件进行加密.</strong>
+                                    </div>
+         <div class="form-group">
+   <textarea class="form-control" id="txtScript" cols="60" rows="16" readonly>
+/*添加到需要授权php源码顶部,注意：请添加在核心代码的<？php  ？> 里面*/
+error_reporting(0);
+function getTopDomainhuo(){
+    $host=$_SERVER['HTTP_HOST'];    
+    $matchstr="[^\.]+\.(?:(".$str.")|\w{2}|((".$str.")\.\w{2}))$";
+    if(preg_match("/".$matchstr."/ies",$host,$matchs)){
+      $domain=$matchs['0'];
+    }else{
+      $domain=$host;
+    }
+    return $domain;
+}
+$topdomain=getTopDomainhuo();
+$client_check='http://{$domain}/api?key=client_check&domain='.$_SERVER['HTTP_HOST'].'&topdomain='.$topdomain;
+$check_info=file_get_contents($client_check);
+$check_info = json_decode($check_info,true);
+if($check_info['message']){
+  echo '<font color=red>' . $check_info['message'] . '</font>';
+  die;
+}
+if($check_info['code']!=0){
+    echo '<font color=red>' . $check_info['error'] . '</font>';
+    die;
+}
+unset($topdomain);
+</textarea>
+</div>
+</div>													
+</section>
+ <!--work progress end-->
+</div>
+
+        </section>
+    </section>
+    <!--main content end-->
+    {include file='public/footer'}

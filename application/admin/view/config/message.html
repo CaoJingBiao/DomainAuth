@@ -1,0 +1,96 @@
+{include file='public/header'}
+{include file='public/list'}   
+ <!--state overview end-->            <div class="row">
+                <div class="col-md-12">
+                    <!--work progress start-->
+                    <section class="panel">
+                        <header class="panel-heading">
+                        更新授权提示
+                        </header>
+                        <div class="panel-body">
+		  
+           <form class="form-horizontal tasi-form" action="" method="post" id="form">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 col-sm-2 control-label">未授权提示</label>
+                                        <div class="col-sm-10">
+                                            <textarea class="form-control" name="message_1" clos="100" rows="3"/>{$messagemsg.message_1}</textarea>
+                                        </div>
+                                    </div>
+									
+                                    <div class="form-group">
+                                        <label class="col-sm-2 col-sm-2 control-label">到期提示</label>
+                                        <div class="col-sm-10">
+                                            <textarea class="form-control" name="message_2" clos="100" rows="3"/>{$messagemsg.message_2}</textarea>
+                                        </div>
+                                    </div>
+									
+                                    <div class="form-group">
+                                        <label class="col-sm-2 col-sm-2 control-label">IP错误提示</label>
+                                        <div class="col-sm-10">
+                                            <textarea class="form-control" name="message_3" clos="100" rows="3"/>{$messagemsg.message_3}</textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 col-sm-2 control-label">域名参数错误提示</label>
+                                        <div class="col-sm-10">
+                                            <textarea class="form-control" name="message_4" clos="100" rows="3"/>{$messagemsg.message_4}</textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 col-sm-2 control-label">远程链接失败提示</label>
+                                        <div class="col-sm-10">
+                                            <textarea class="form-control" name="message_0" clos="100" rows="3"/>{$messagemsg.message_0}</textarea>
+                                        </div>
+                                    </div>
+									
+                                
+			<div id="bottom" class="form-group">
+			<label class="col-sm-2 col-sm-2 control-label"></label>
+			  <a class="btn btn-info btn-lg" value="true" id="submit" onclick='msg_edit()'/><i class="fa fa-refresh" id="spinner"></i> <span id="btnText">更新授权提示</span></a>
+            </div>
+                            </form>
+                        </div>
+                    </section>
+                    <!--work progress end-->
+                </div>
+
+        </section>
+    </section>
+    <!--main content end-->
+{include file='public/footer'}
+<script type="text/javascript">
+function msg_edit(){
+    var message_1 = $("input[name='message_1']").val();
+    var message_2 = $("input[name='message_2']").val();
+    var message_3 = $("input[name='message_3']").val();
+    if(message_1==''){
+        layer.msg('未授权提示不能为空!',{icon: 2,time:1000});
+        return false;
+    }
+    if(message_2==''){
+        layer.msg('授权到期提示不能为空!',{icon: 2,time:1000});
+        return false;
+    }
+    if(message_3==''){
+        layer.msg('授权IP不正确提示不能为空!',{icon: 2,time:1000});
+        return false;
+    }
+    $.ajax({
+        type: 'post',
+        url: '{:url("admin/config/message")}',
+        data: $('#form').serialize(),
+        success: function(data){
+            if(data.code==1){
+                layer.msg(data.msg, 
+                {icon:1,time:1000},function(){
+                     window.location.href = data.url;});
+            }else{
+                layer.msg(data.msg, 
+                {icon:2,time:1000});   
+            }
+        }
+    });
+}     
+</script>
